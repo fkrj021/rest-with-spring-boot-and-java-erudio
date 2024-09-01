@@ -1,15 +1,16 @@
 package com.aularestudemy.udemy.controller;
 
-import com.aularestudemy.udemy.model.Person;
+import com.aularestudemy.udemy.dto.v1.PersonVO;
+import com.aularestudemy.udemy.dto.v2.PersonVOV2;
 import com.aularestudemy.udemy.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
+
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+
 
 @RestController
 @RequestMapping("/person")
@@ -19,23 +20,23 @@ public class PersonController {
     private PersonServices personServices;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Person> findAll(){
+    public List<PersonVO> findAll(){
         return personServices.findAll();
     }
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(
+    public PersonVO findById(
             @PathVariable(value = "id") Long id) throws Exception{
-            return personServices.findById(id);
+        return personServices.findById(id);
         }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                 consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person){
+    public PersonVO create(@RequestBody PersonVO person){
         return personServices.create(person);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
                 consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person){
+    public PersonVO update(@RequestBody PersonVO person){
         return personServices.update(person);
     }
 
@@ -44,6 +45,16 @@ public class PersonController {
         personServices.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    //////////V2/////////////
+
+    @PostMapping(value = "/v2",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public PersonVOV2 createV2(@RequestBody PersonVOV2 person){
+        return personServices.createV2(person);
+    }
+
 }
 
 
