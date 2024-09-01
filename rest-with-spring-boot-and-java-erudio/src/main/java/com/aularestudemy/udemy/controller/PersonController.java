@@ -13,34 +13,35 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/person")
 public class PersonController {
 
     @Autowired
     private PersonServices personServices;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/v1",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<PersonVO> findAll(){
         return personServices.findAll();
     }
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @GetMapping(value = "/v1/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public PersonVO findById(
             @PathVariable(value = "id") Long id) throws Exception{
         return personServices.findById(id);
         }
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(value="/v1",produces = MediaType.APPLICATION_JSON_VALUE,
                 consumes = MediaType.APPLICATION_JSON_VALUE)
     public PersonVO create(@RequestBody PersonVO person){
         return personServices.create(person);
     }
 
-    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(value="/v1",produces = MediaType.APPLICATION_JSON_VALUE,
                 consumes = MediaType.APPLICATION_JSON_VALUE)
     public PersonVO update(@RequestBody PersonVO person){
         return personServices.update(person);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/id/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         personServices.delete(id);
         return ResponseEntity.noContent().build();

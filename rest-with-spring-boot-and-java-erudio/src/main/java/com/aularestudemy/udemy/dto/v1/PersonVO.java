@@ -1,8 +1,11 @@
 package com.aularestudemy.udemy.dto.v1;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@JsonPropertyOrder({"id","gender","adress","firstName","lastName",})
 public class PersonVO implements Serializable {
     private static final long serilVersionUID = 1L;
 
