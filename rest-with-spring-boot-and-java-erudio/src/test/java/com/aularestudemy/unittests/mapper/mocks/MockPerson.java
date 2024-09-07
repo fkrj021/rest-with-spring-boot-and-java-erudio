@@ -1,4 +1,4 @@
-package com.aularestudemy.rest_with_spring_boot_and_java_erudio.unittests.mapper.mocks;
+package com.aularestudemy.unittests.mapper.mocks;
 
 import com.aularestudemy.udemy.dto.v1.PersonVO;
 import com.aularestudemy.udemy.model.Person;
@@ -48,7 +48,7 @@ public class MockPerson {
         person.setAdress("Addres Test" + number);
         person.setFirstName("First Name Test" + number);
         person.setGender(((number % 2)==0) ? "Male" : "Female");
-        person.setId(number.longValue());
+        person.setKey(number.longValue());
         person.setLastName("Last Name Test" + number);
         return person;
     }

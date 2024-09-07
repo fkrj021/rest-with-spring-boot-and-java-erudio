@@ -1,9 +1,9 @@
-package com.aularestudemy.rest_with_spring_boot_and_java_erudio;
+package com.aularestudemy;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = StartupApplicationTests.class)
 class StartupApplicationTests {
 
     @Test
