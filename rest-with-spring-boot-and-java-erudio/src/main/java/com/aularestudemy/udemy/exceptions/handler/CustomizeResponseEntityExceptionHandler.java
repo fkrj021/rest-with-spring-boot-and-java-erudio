@@ -1,6 +1,7 @@
 package com.aularestudemy.udemy.exceptions.handler;
 
 import com.aularestudemy.udemy.exceptions.ExceptionResponse;
+import com.aularestudemy.udemy.exceptions.InvalidJwtAuthenticationException;
 import com.aularestudemy.udemy.exceptions.RequiredObjectsIsNullException;
 import com.aularestudemy.udemy.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -36,14 +37,25 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
     			request.getDescription(false));
     	return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
+    
     @ExceptionHandler(RequiredObjectsIsNullException.class)
     public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(
+    		Exception ex , WebRequest request){
+    	ExceptionResponse exceptionResponse = new ExceptionResponse(
+    			new Date(),
+    			ex.getMessage(),
+    			request.getDescription(false));
+    	return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(InvalidJwtAuthenticationException.class)
+    public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationException(
             Exception ex , WebRequest request){
         ExceptionResponse exceptionResponse = new ExceptionResponse(
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
     }
 
 }

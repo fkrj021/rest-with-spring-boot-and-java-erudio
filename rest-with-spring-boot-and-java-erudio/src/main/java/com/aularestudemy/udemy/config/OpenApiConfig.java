@@ -1,4 +1,4 @@
-package com.aularestudemy.config;
+package com.aularestudemy.udemy.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

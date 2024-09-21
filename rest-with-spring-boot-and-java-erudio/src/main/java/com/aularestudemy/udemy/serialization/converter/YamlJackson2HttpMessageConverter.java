@@ -1,4 +1,4 @@
-package com.aularestudemy.serialization.converter;
+package com.aularestudemy.udemy.serialization.converter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;

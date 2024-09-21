@@ -1,6 +1,4 @@
-package com.aularestudemy.config;
-
-import com.aularestudemy.serialization.converter.YamlJackson2HttpMessageConverter;
+package com.aularestudemy.udemy.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +7,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.aularestudemy.udemy.serialization.converter.YamlJackson2HttpMessageConverter;
 
 import java.util.List;
 
