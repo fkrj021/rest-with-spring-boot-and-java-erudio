@@ -1,7 +1,11 @@
 package com.aularestudemy.udemy.controller;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aularestudemy.udemy.dto.v1.BookVO;
@@ -53,8 +58,17 @@ public class BookController {
     		
    		}
     )
-    public List<BookVO> findAll() throws Exception {
-        return bookServices.findAll();
+    public ResponseEntity<PagedModel<EntityModel<BookVO>>> findAll(
+    		@RequestParam(value = "page", defaultValue = "0") Integer page,
+    		@RequestParam(value = "size" , defaultValue = "12") Integer size,
+    		@RequestParam(value = "direction", defaultValue = "asc")String direction
+    		) throws Exception {
+    	
+    	var sortDirection = "desc".equalsIgnoreCase(direction) ? Direction.DESC : Direction.ASC;
+    	
+    	Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "title"));
+    	
+        return ResponseEntity.ok(bookServices.findAll(pageable));
     }
 
     @GetMapping(value = "/{id}",    		

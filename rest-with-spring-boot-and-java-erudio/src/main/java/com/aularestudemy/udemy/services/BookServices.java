@@ -3,10 +3,14 @@ package com.aularestudemy.udemy.services;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
 
 import com.aularestudemy.udemy.controller.BookController;
@@ -24,18 +28,35 @@ public class BookServices {
 
     @Autowired
     BookRepository bookRepository;
+    
+    @Autowired
+    PagedResourcesAssembler<BookVO> assembler;
 
-//    @Autowired
-//    BookMapper bookMapper;
 
-    public List<BookVO> findAll() throws Exception {
+    public PagedModel<EntityModel<BookVO>> findAll(Pageable pageable) throws Exception {
 
-        logger.info("Find All book!");
-        var books = DozerMapper.parseListObjects(bookRepository.findAll(),BookVO.class) ;
-        for (BookVO p : books) {
-            p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel());
-        }
-        return books;
+    	logger.info("Finding all books!");
+
+		var booksPage = bookRepository.findAll(pageable);
+
+		var booksVOs = booksPage.map(p -> DozerMapper.parseObject(p, BookVO.class));
+		booksVOs.map(p -> {
+			try {
+				return p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return p;
+		});
+		
+		Link findAllLink = linkTo(
+		          methodOn(BookController.class)
+		          	.findAll(pageable.getPageNumber(),
+	                         pageable.getPageSize(),
+	                         "asc")).withSelfRel();
+		
+		return assembler.toModel(booksVOs, findAllLink);
     }
     public BookVO findById(Long id) throws Exception {
         logger.info("Finding one BookDTO!");

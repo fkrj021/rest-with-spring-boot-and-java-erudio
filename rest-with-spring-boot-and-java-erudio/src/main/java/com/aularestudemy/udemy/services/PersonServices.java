@@ -1,8 +1,20 @@
 package com.aularestudemy.udemy.services;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.stereotype.Service;
+
 import com.aularestudemy.udemy.controller.PersonController;
 import com.aularestudemy.udemy.dto.v1.PersonVO;
-
 import com.aularestudemy.udemy.dto.v2.PersonVOV2;
 import com.aularestudemy.udemy.exceptions.RequiredObjectsIsNullException;
 import com.aularestudemy.udemy.exceptions.ResourceNotFoundException;
@@ -10,14 +22,6 @@ import com.aularestudemy.udemy.mapper.DozerMapper;
 import com.aularestudemy.udemy.mapper.custom.PersonMapper;
 import com.aularestudemy.udemy.model.Person;
 import com.aularestudemy.udemy.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 public class PersonServices {
@@ -29,15 +33,35 @@ public class PersonServices {
 
     @Autowired
     PersonMapper personMapper;
+    
+    @Autowired
+    PagedResourcesAssembler<PersonVO> assembler;
 
-    public List<PersonVO> findAll() throws Exception {
+    public PagedModel<EntityModel<PersonVO>> findAll(Pageable pageable) throws Exception {
 
         logger.info("Find All People!");
-        var persons = DozerMapper.parseListObjects(repository.findAll(),PersonVO.class) ;
-        for (PersonVO p : persons) {
-            p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel());
-        }
-        return persons;
+        
+        var personPage = repository.findAll(pageable);
+        var personVosPage = personPage.map(p ->  DozerMapper.parseObject(p,PersonVO.class));
+        
+        personVosPage.map(
+        		p -> {
+					try {
+						return p.add(
+								linkTo(methodOn(PersonController.class)
+										.findById(p.getKey())).withSelfRel());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return p;
+				});
+        
+        Link link = linkTo(methodOn(PersonController.class)
+        		.findAll(pageable.getPageNumber(), 
+        				pageable.getPageSize(), 
+        				"asc")).withSelfRel();
+		return assembler.toModel(personVosPage, link);
     }
     public PersonVO findById(Long id) throws Exception {
         logger.info("Finding one PersonDTO!");
