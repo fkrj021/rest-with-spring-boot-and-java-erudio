@@ -1,7 +1,8 @@
-package com.aularestudemy.rest_with_spring_boot_and_java_erudio;
+package com.aularestudemy.udemy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 public class Startup {
