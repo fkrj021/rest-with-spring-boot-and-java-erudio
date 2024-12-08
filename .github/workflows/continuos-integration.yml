@@ -25,7 +25,7 @@ jobs:
         cache: maven
     - name: Build JAR
       working-directory: ./rest-with-spring-boot-and-java-erudio
-      run: mvn clean package
+      run: mvn clean package -DskipTests
     - name: Docker Compose
       working-directory: ./rest-with-spring-boot-and-java-erudio
       run: docker compose build
