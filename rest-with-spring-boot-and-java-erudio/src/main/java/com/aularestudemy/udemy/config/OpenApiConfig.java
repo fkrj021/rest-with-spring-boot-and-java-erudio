@@ -14,13 +14,13 @@ public class OpenApiConfig {
     OpenAPI customOpenAPI() {
 		return new OpenAPI()
 				.info(new Info()
-						.title("Aula Udemy RESTful")
+						.title("Api RESTful")
 						.version("v1")
-						.description("Teste")
+						.description("CRUD via API")
 						.termsOfService("")
 						.license(new License()
-								.name("Apache 2.0")
-								.url("https://google.com")
+								.name("Visual Mix")
+								.url("https://visualmix.com.br")
 								)
 						);
 	}
