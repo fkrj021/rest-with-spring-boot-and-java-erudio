@@ -24,7 +24,7 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Build JAR
-      working-directory: ./rest-with-spring-boot-and-java-erudio/rest-with-spring-boot-and-java-erudio
+      working-directory: ./rest-with-spring-boot-and-java-erudio
       run: mvn clean package
     - name: Docker Compose
       working-directory: ./rest-with-spring-boot-and-java-erudio
