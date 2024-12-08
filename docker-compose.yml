@@ -13,13 +13,13 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_TCP_PORT: 3308
     ports:
-      - 3308:3308
+      - 3308:3306
     expose:
       - 3308
     networks:
       - erudio-network
   rest-with-spring-boot-erudio:
-    image: leandrocgsi/rest-with-spring-boot-erudio
+    image: fkrj021/rest-with-spring-boot-erudio
     restart: always
     build: ./rest-with-spring-boot-and-java-erudio
     working_dir: /rest-with-spring-boot-and-java-erudio
